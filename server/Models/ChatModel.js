@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const ChatSchema = mongoose.schema(
+const ChatSchema = new mongoose.Schema(
     {
         members:{
             type:Array

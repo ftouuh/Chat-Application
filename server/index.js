@@ -1,10 +1,14 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+<<<<<<< HEAD
 import { Router } from 'express';
 
 import MessageRoute from './Routes/MessageRoute.js';
 const router = Router()
+=======
+import ChatRoute from './Routes/ChatRoute.js';
+>>>>>>> c6be3c4cde18aad2568de4c2258eb10a9a7273c5
 
 
 const app = express();
