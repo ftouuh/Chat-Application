@@ -33,5 +33,3 @@ mongoose.connect(db_con_str).then(()=>{
         console.log('failed to connect to database');
     }
 )
-
-
