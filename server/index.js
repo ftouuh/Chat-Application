@@ -1,10 +1,18 @@
 import express from 'express';
-
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 const app = express();
+
+dotenv.config();
+
+const PORT = process.env.PORT || 3000;
+const db_con_str=process.env.DB_CON_STR;
+
+
 
 app.use(express.json);
 
-app.listen(3000,(err)=>{
+app.listen(PORT,(err)=>{
     if(err){
         console.log('server is down ');
     }
@@ -12,3 +20,15 @@ app.listen(3000,(err)=>{
         console.log('server is good ');
     }
 })
+
+
+mongoose.connect(db_con_str).then(()=>{
+    console.log('connected to database');
+
+}).catch(
+    (error)=>{
+        console.log('failed to connect to database');
+    }
+)
+
+
