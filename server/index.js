@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { Router } from 'express';
+
+import MessageRoute from './Routes/MessageRoute.js';
 const router = Router()
 
 
@@ -33,3 +35,5 @@ mongoose.connect(db_con_str).then(()=>{
         console.log('failed to connect to database');
     }
 )
+
+app.use("/message", MessageRoute)
