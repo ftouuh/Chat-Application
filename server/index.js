@@ -1,8 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { Router } from 'express';
-const router = Router()
+import ChatRoute from './Routes/ChatRoute.js';
 
 
 const app = express();
@@ -33,3 +32,5 @@ mongoose.connect(db_con_str).then(()=>{
         console.log('failed to connect to database');
     }
 )
+
+app.use('/chat', ChatRoute);
