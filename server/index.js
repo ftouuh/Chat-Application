@@ -12,7 +12,7 @@ const db_con_str=process.env.DB_CON_STR;
 
 
 
-app.use(express.json);
+app.use(express.json());
 
 app.listen(PORT,(err)=>{
     if(err){

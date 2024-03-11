@@ -9,7 +9,7 @@ export const createChat = async (req, res) => {
         const result = await newChat.save();
         res.status(200).json(result);
     } catch (error) {
-        res.staus(400).json(error);
+        res.status(400).json(error);
     }
 }
 
@@ -26,10 +26,10 @@ export const userChats = async (req, res) => {
 }
 
 export const findChat = async (req, res) => {
-    const { userId1, userId2 } = req.params;
+
     try {
-        const chat = ChatModel.findOne({
-            members: { $all: [userId1, userId2] }
+        const chat = await ChatModel.findOne({
+            members: { $all: [req.params.UserId1, req.params.UserId2] }
         });
         res.status(200).json(chat)
     } catch (error) {
