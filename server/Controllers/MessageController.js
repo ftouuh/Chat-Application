@@ -1,11 +1,10 @@
 import MessageModel from '../Models/MessageModel.js';
 
-export const addMessage = async (req,res) => {
-    const {chatId , senderId , msgId , content} = req.body;
+export const sendMessage = async (req,res) => {
+    const {chatId , senderId , content} = req.body;
     const message = new MessageModel({
         chatId,
         senderId,
-        msgId,
         content
     })
     try {
@@ -27,3 +26,13 @@ export const seeMessages = async (req,res) => {
     }
 }
 
+export const deleteMessage = async (req,res) => {
+    const {msgId} = req.params;
+
+    try {
+        const result = await MessageModel.deleteOne({msgId : msgId})
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

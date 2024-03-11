@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
+
 
 const MessageSchema = new mongoose.Schema(
     {
@@ -6,7 +8,9 @@ const MessageSchema = new mongoose.Schema(
             type: String,
         },
         msgId: {
-            type : String
+            type : String,
+            default: uuidv4,
+            unique : true,
         },
         senderId: {
             type : String,

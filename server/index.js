@@ -16,7 +16,7 @@ const db_con_str=process.env.DB_CON_STR;
 
 
 
-app.use(express.json);
+app.use(express.json());
 
 app.listen(PORT,(err)=>{
     if(err){
@@ -37,5 +37,5 @@ mongoose.connect(db_con_str).then(()=>{
     }
 )
 
-app.use("/message", MessageRoute)
+app.use("/msg", MessageRoute)
 app.use('/chat', ChatRoute);
