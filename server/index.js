@@ -1,41 +1,32 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import { Router } from 'express';
-
-import MessageRoute from './Routes/MessageRoute.js';
-const router = Router()
-import ChatRoute from './Routes/ChatRoute.js';
-
-
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import authRouter from "./Routes/UserRoute.js";
+import MessageRoute from "./Routes/MessageRoute.js";
+import ChatRoute from "./Routes/ChatRoute.js";
+import requireAuth from "./Middleware/authMiddleware.js";
+import cookieParser from "cookie-parser";
 const app = express();
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const db_con_str=process.env.DB_CON_STR;
+const db_con_str = process.env.DB_CON_STR;
 
-
-
+// middlware
 app.use(express.json());
+app.use(express.static("public"));
+app.use(cookieParser());
 
-app.listen(PORT,(err)=>{
-    if(err){
-        console.log('server is down ');
-    }
-    else{
-        console.log('server is good ');
-    }
-})
+mongoose
+  .connect(db_con_str)
+  .then(() => {
+    app.listen(PORT);
+  })
+  .catch((error) => {
+    console.log("failed to connect to database");
+  });
 
-
-mongoose.connect(db_con_str).then(()=>{
-    console.log('connected to database');
-
-}).catch(
-    (error)=>{
-        console.log('failed to connect to database');
-    }
-)
-
-app.use("/msg", MessageRoute)
-app.use('/chat', ChatRoute);
+//routes
+app.use("/msg", requireAuth, MessageRoute);
+app.use("/chat", requireAuth, ChatRoute);
+app.use(authRouter);
