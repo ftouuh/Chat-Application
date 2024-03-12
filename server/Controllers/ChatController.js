@@ -1,15 +1,17 @@
 import ChatModel from "../Models/ChatModel.js";
 import UserModel from "../Models/UserModel.js"
 export const createChat = async (req, res) => {
-    const newChat = new ChatModel({
+    const newChat1 = new ChatModel({
         members: [req.body.senderId, req.body.receiverId]
-    }
-    )
+    });
+    const newChat2 = new ChatModel({
+        members: [req.body.receiverId, req.body.senderId]
+    });
     try {
-        const result = await newChat.save();
-        res.status(200).json(result);
+        await Promise.all([newChat1.save(), newChat2.save()]);
+        res.status(200).json({ message: "Chats created successfully" });
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).json({ error: error.message });
     }
 }
 
