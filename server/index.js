@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow requests from your frontend origin
+    origin: "http://localhost:5173",
   })
 );
 
@@ -30,7 +30,7 @@ mongoose
   .connect(db_con_str)
   .then(() => {
     app.listen(PORT);
-    console.log('connected to database');
+    console.log('Server and database connected');
   })
   .catch((error) => {
     console.log("failed to connect to database");

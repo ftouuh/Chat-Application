@@ -10,7 +10,7 @@ const Signup = () => {
     event.preventDefault();
     if (!username || !email || !password) {
       alert("Please fill in all fields.");
-      return;
+      return ;
     }
 
     console.log("Submitting signup data:", { username, email, password });
