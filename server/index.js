@@ -21,6 +21,7 @@ mongoose
   .connect(db_con_str)
   .then(() => {
     app.listen(PORT);
+    console.log('connected to database');
   })
   .catch((error) => {
     console.log("failed to connect to database");
