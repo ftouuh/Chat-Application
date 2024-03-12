@@ -25,7 +25,6 @@ const handlErrors = (err) => {
 
 const maxAge = 60 * 1000 * 24;
 
-
 const createToken = (id) => {
   return jwt.sign({ id }, "chat123", { expiresIn: maxAge });
 };
@@ -37,7 +36,7 @@ const userController = {
   login_post: async (req, res) => {
     const { username, password } = req.body;
     try {
-      const user = await User.login(username, password );
+      const user = await User.login(username, password);
       const token = createToken(user._id);
       res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 2024 });
       res.status(200).json({ user: user._id });
@@ -54,7 +53,7 @@ const userController = {
     const { username, email, password } = req.body;
     try {
       const user = await User.create({ username, email, password });
-        // save the user in db
+      // save the user in db
       const token = createToken(user._id);
       //create a token for the successfully signup suser
       res.cookie("jwt", token, { httpOnly: true, expiresIn: maxAge * 2024 });
@@ -66,9 +65,13 @@ const userController = {
     }
   },
   // test required middlware
-  home : (req,res) =>{
-    res.status(200).send({msg : "this the protected route"})
-  }
+  home: (req, res) => {
+    res.status(200).send({ msg: "this the protected route" });
+  },
+  logout: (req, res) => {
+    res.cookie("jwt", "", { expiresIn: 1 });
+    res.status(200).json("Good");
+  },
 };
 
 export default userController;
