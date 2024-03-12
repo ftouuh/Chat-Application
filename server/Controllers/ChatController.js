@@ -1,5 +1,5 @@
 import ChatModel from "../Models/ChatModel.js";
-
+import UserModel from "../Models/UserModel.js"
 export const createChat = async (req, res) => {
     const newChat = new ChatModel({
         members: [req.body.senderId, req.body.receiverId]
@@ -34,6 +34,17 @@ export const findChat = async (req, res) => {
         res.status(200).json(chat)
     } catch (error) {
         res.status(400).json(error);
+    }
+}
+
+export const getUser = async (req, res) => {
+    try {
+        const UserId = await UserModel.findOne({
+            username: { $in: [req.params.UserName] }
+        })
+        res.status(200).json(UserId);
+    } catch (error) {
+        res.status(400).json(error)
     }
 }
 
