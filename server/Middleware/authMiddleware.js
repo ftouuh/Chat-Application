@@ -8,14 +8,14 @@ const requireAuth = (req, res, next) => {
         // verify the token using the verify function takes : token , secret , callback function
       if (err) {
         console.log(err.message);
-        res.status(403).send({ msg: "require login" });
+        res.status(403).redirect("/login");
       } else {
         console.log(decodedToken);
         next();
       }
     });
   } else {
-    res.status(403).send({ msg: " require login" });
+    res.status(403).redirect("/login");
   }
 };
 export default requireAuth;

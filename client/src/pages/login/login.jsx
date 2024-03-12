@@ -1,28 +1,63 @@
-import React, { useState } from 'react';
-import './login.css'; // Import the CSS file
+import React, { useState } from "react";
+import "./login.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({}); // Use errors object instead of errorMessage
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
 
-   
     if (!username || !password) {
-      setErrorMessage('Please fill fields.');
-      return; 
+      setErrors({ general: "Please fill all fields." }); // Set specific error
+      return;
     }
-    console.log('Submitting login data:', { username, password });
 
-    setErrorMessage('');
+    axios
+      .post("http://localhost:3000/login", { username, password })
+      .then((response) => {
+        console.log(response);
+        navigate('/home')
+      })
+      .catch((error) => {
+        if (error.response) {
+          const errObj = error.response.data;
+          if (errObj.errors) {
+            const newErrors = {};
+            Object.entries(errObj.errors).forEach(([field, message]) => {
+              newErrors[field] = message;
+            });
+            setErrors(newErrors);
+          } else {
+            setErrors({ general: "password or username incorrect !" });
+          }
+        } else {
+          setErrors({ general: "Network error." });
+        }
+      });
+
+    console.log("Submitting login data:", { username, password });
   };
 
   return (
     <div className="login-form">
       <h1>Login</h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {Object.keys(errors).length > 0 && (
+        <ul className="error-messages">
+          {Object.entries(errors).map(([field, message]) => (
+            <li key={field}>
+              {field === "general"
+                ? message
+                : `${field.charAt(0).toUpperCase()}${field.slice(
+                    1
+                  )}: ${message}`}
+            </li>
+          ))}
+        </ul>
+      )}
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">
           Username:
@@ -43,7 +78,7 @@ const Login = () => {
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            minLength={8} 
+            minLength={8}
             required
           />
         </label>
