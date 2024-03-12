@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Signup.css"; // Import the CSS file
+import "./signup.css"; // Import the CSS file
 import axios from "axios";
 const Signup = () => {
   const [username, setUsername] = useState("");
