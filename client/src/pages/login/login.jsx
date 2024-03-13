@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import "./login.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import {
+  selectStatus,
+  setAuthenticationStatus,
+} from "../../features/users/userSlice";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({}); // Use errors object instead of errorMessage
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,7 +25,10 @@ const Login = () => {
       .post("http://localhost:3000/login", { username, password })
       .then((response) => {
         console.log(response);
-        navigate('/home')
+        dispatch(setAuthenticationStatus(true));
+        localStorage.setItem("isAuthenticated", "true");
+
+        navigate("/");
       })
       .catch((error) => {
         if (error.response) {

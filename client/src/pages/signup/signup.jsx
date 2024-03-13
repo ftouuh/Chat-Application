@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import "./signup.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -23,6 +24,7 @@ const Signup = () => {
     }
 
     console.log("Submitting signup data:", { username, email, password });
+    navigate("/login");
 
     axios
       .post("http://localhost:3000/signup", { username, email, password })
@@ -45,7 +47,9 @@ const Signup = () => {
             setErrors({ general: "Signup failed. Please try again." });
           }
         } else if (error.request) {
-          setErrors({ general: "Network error. Please check your internet connection." });
+          setErrors({
+            general: "Network error. Please check your internet connection.",
+          });
         } else {
           setErrors({ general: "An error occurred. Please try again." });
         }
@@ -67,7 +71,9 @@ const Signup = () => {
             required
             className={errors.username ? "error-input" : ""}
           />
-          {errors.username && <span className="error-message">{errors.username}</span>}
+          {errors.username && (
+            <span className="error-message">{errors.username}</span>
+          )}
         </label>
         <label htmlFor="email">
           Email:
@@ -80,7 +86,9 @@ const Signup = () => {
             required
             className={errors.email ? "error-input" : ""}
           />
-          {errors.email && <span className="error-message">{errors.email}</span>}
+          {errors.email && (
+            <span className="error-message">{errors.email}</span>
+          )}
         </label>
         <label htmlFor="password">
           Password:
@@ -94,7 +102,9 @@ const Signup = () => {
             required
             className={errors.password ? "error-input" : ""}
           />
-          {errors.password && <span className="error-message">{errors.password}</span>}
+          {errors.password && (
+            <span className="error-message">{errors.password}</span>
+          )}
         </label>
         <button type="submit">Sign Up</button>
       </form>

@@ -23,7 +23,7 @@ const handlErrors = (err) => {
   return errors;
 };
 
-const maxAge = 60 * 1000 * 24;
+const maxAge = 60 * 1000 * 59 * 24;
 
 const createToken = (id) => {
   return jwt.sign({ id }, "chat123", { expiresIn: maxAge });
@@ -38,7 +38,7 @@ const userController = {
     try {
       const user = await User.login(username, password);
       const token = createToken(user._id);
-      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 2024 });
+      res.cookie("jwt", token, { maxAge: maxAge * 2024 });
       res.status(200).json({ user: user._id });
     } catch (err) {
       const erros = handlErrors(err);
@@ -56,7 +56,8 @@ const userController = {
       // save the user in db
       const token = createToken(user._id);
       //create a token for the successfully signup suser
-      res.cookie("jwt", token, { httpOnly: true, expiresIn: maxAge * 2024 });
+      res.cookie("jwt", token, { expiresIn: maxAge * 2024 });
+      console.log(token);
       // insert the token in a cookie named JWT
       res.status(200).send({ user: user._id });
     } catch (err) {
